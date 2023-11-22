@@ -103,7 +103,8 @@ pre {
 #quickReference code        {font-size:110%;}
 table tr.altBg              {background:#f2eab7;}
 
-#search                     {height:60px; width:99.75%;}
+#query                     {height:60px; width:99.75%;}
+#search                     {height:60px; width:99.75%; margin-top:10px;}
 #input                      {height:375px; width:99.75%; margin-top:10px;}
 .smartField                 {position:relative; overflow:auto; border:1px solid #ccc; background:#f9f9f9;}
 .smartField pre,
