@@ -45,6 +45,10 @@ pre {
 .bold        {font-weight:bold;}
 .hidden      {display:none;}
 
+.box { border: 3px solid lightgray; border-radius: 10px; margin: 1em; padding: 1em }
+#container	 {display: flex;}
+#container #left	{width: 50%}
+#container #right	{width: 50%}
 #header      {border-bottom:1px dotted #ccc; height:32px;}
 #header img  {float:left; position:absolute; top:5px; left:5px; z-index:60;}
 #header h1   {float:left; position:absolute; top:5px; left:50px;}
@@ -108,9 +112,12 @@ table tr.altBg              {background:#f2eab7;}
 #input                      {height:375px; width:99.75%; margin-top:10px;}
 .smartField                 {position:relative; overflow:auto; border:1px solid #ccc; background:#f9f9f9;}
 .smartField pre,
-.smartField textarea        {font:100% "courier new",monospace; width:100%;}
+.smartField textarea, #test-label        {font:100% "courier new",monospace; width:100%;}
 .smartField pre             {z-index:1; color:#f9f9f9;}
 .smartField textarea        {z-index:2; border:0; background:transparent; position:absolute; top:0; height:100%; min-height:100%; overflow:hidden;}
+#test-names { width: 30%; }
+.test { display: none; }
+.default { display: block; }
 
 /* Highlighting ------------------------------------- */
 b, i, u       {font-weight:normal; font-style:normal; text-decoration:none;}

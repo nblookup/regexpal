@@ -14,19 +14,30 @@
 	<title>Regex Tester &ndash; RegexPal</title>
 	<link href="./assets/regexpal.css" rel="stylesheet" type="text/css"/>
 </head>
+<script>
+	function dropdownChange() {
+	// Dropdown to show tests
+	const el = document.getElementById('test-names-1');
+
+	el.addEventListener('change', function handleChange(event) {
+		const tests = document.querySelectorAll(".test");
+		console.log(tests)
+
+		tests.forEach((test) => {
+			test.style.display = 'none';
+		});
+
+		const selected = document.getElementById(event.target.value);
+		selected.style.display = 'block';
+	});
+}
+</script>
 <body>
 	<div id="header">
 		<img src="./assets/regexpal.gif" alt="RegexPal"/>
-		<h1><a href="./"><span class="t1">Regex</span><span class="t2">Pal</span>
-			<span id="version">0.1.4</span>
-			<span id="subtitle">&mdash; a JavaScript regular expression tester</span></a>
+		<h1><a href="./"><span class="t1">Pattern</span><span class="t2">Pal</span>
+			<span id="subtitle">&mdash; A trustworthy JavaScript regular expression tester!</span></a>
 		</h1>
-		<ul id="nav">
-			<li><a href="http://blog.stevenlevithan.com/archives/regexpal">Help</a></li>
-			<li><a href="./history/">Version History</a></li>
-			<li><a href="mailto:steves_list&#064;hotmail.com">Feedback</a></li>
-			<li><a href="http://blog.stevenlevithan.com">Blog</a></li>
-		</ul>
 	</div>
 
 	<div id="options">
@@ -142,14 +153,31 @@
 	</div>
 
 	<div id="body">
-		<div id="query" class="smartField">
-			<textarea cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
-		</div>
-		<div id="search" class="smartField">
-			<textarea cols="100" rows="3" tabindex="1" placeholder="Enter regex here."></textarea>
-		</div>
-		<div id="input" class="smartField">
-			<textarea cols="100" rows="10" tabindex="2" placeholder="Enter test data here."></textarea>
+		<div id="container">
+			<div id="left" class="box">
+				<div id="query" class="smartField">
+					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
+				</div>
+				<div id="search" class="smartField">
+					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter regex here."></textarea>
+				</div>
+				<div id="input" class="smartField">
+					<textarea cols="100" rows="10" tabindex="2" placeholder="Enter test data here."></textarea>
+				</div>
+			</div>
+			<div id="right" class="box">
+				<label for="test-names" id="test-label">Select a test:</label> 
+				<select name="test-names" id="test-names-1" onchange="dropdownChange()"> 
+					<option value="test-1">Test 1</option> 
+					<option value="test-2">Test 2</option> 
+					<option value="test-3">Test 3</option> 
+					<option value="test-4">Test 4</option> 
+				</select>
+				<p id="test-1" class="default test">Test 1</p>
+				<p id="test-2" class="test">Test 2</p>
+				<p id="test-3" class="test">Test 3</p>
+				<p id="test-4" class="test">Test 4</p>
+			</div>
 		</div>
 	</div>
 
