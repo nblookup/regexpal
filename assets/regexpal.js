@@ -48,6 +48,8 @@ extend(RegexPal, function () {
 				var	query = String(f.query.textbox.value),
 					search = String(f.search.textbox.value),
 					input  = String(f.input.textbox.value);
+				
+				// HANDLE QUERY HERE TO GENERATE TESTS
 
 				/* Abort if the user's regex contains an error (the test regex accounts for IE's changes to innerHTML).
 				The syntax highlighting catches a number of mistakes and cross-browser issues which might not cause the

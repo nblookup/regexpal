@@ -49,14 +49,13 @@ pre {
 #container	 {display: flex;}
 #container #left	{width: 50%}
 #container #right	{width: 50%}
-#header      {border-bottom:1px dotted #ccc; height:32px;}
-#header img  {float:left; position:absolute; top:5px; left:5px; z-index:60;}
-#header h1   {float:left; position:absolute; top:5px; left:50px;}
-#header h1 a {text-decoration:none; color:#333;}
+#header      {height: 50px;}
+#header img  {float:left; position:absolute; top:5px; left:5px; z-index:60; margin: 20px}
 #header .t1,
 #header .t2  {font-family:arial,sans-serif; font-size:120%; text-transform:lowercase;}
 #header .t1  {color:#999;}
 #header .t2  {color:#666;}
+.logo		 {width:200px;}
 #version     {font-size:80%; font-weight:normal; font-style:italic;}
 #subtitle    {font-size:80%; font-weight:normal;}
 #body        {padding:10px;}
