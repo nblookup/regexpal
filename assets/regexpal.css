@@ -106,16 +106,20 @@ pre {
 #quickReference code        {font-size:110%;}
 table tr.altBg              {background:#f2eab7;}
 
-#query                      {height:20%; width:99.75%;}
+#best						{background-color: oldlace}
+#passed						{background-color: lightgreen}
+#failed						{background-color: lightcoral}
+#key                        {height:10%; width:99.75%;}
+#query                      {height:20%; width:99.75%; margin-top:10px;}
 #search                     {height:20%; width:99.75%; margin-top:10px;}
-#input                      {height:55% !important; width:99.75%; margin-top:10px;}
+#input                      {height:35% !important; width:99.75%; margin-top:10px;}
 .smartField                 {position:relative; overflow:auto; border:1px solid #ccc; background:#f9f9f9;}
 .smartField pre,
 .smartField textarea, #test-label        {font:100% "courier new",monospace; width:100%;}
 .smartField pre             {z-index:1; color:#f9f9f9;}
 .smartField textarea        {z-index:2; border:0; background:transparent; position:absolute; top:0; height:100%; min-height:100%; overflow:hidden;}
 #test-names { width: 30%; }
-.test { display: none; }
+.solution { display: none; }
 .default { display: block; }
 
 /* Highlighting ------------------------------------- */

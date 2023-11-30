@@ -17,14 +17,13 @@
 <script>
 	function dropdownChange() {
 	// Dropdown to show tests
-	const el = document.getElementById('test-names-1');
+	const dd = document.getElementById('solution-dropdown');
 
-	el.addEventListener('change', function handleChange(event) {
-		const tests = document.querySelectorAll(".test");
-		console.log(tests)
+	dd.addEventListener('change', function handleChange(event) {
+		const solns = document.querySelectorAll(".solution");
 
-		tests.forEach((test) => {
-			test.style.display = 'none';
+		solns.forEach((soln) => {
+			soln.style.display = 'none';
 		});
 
 		const selected = document.getElementById(event.target.value);
@@ -135,28 +134,32 @@
 	<div id="body">
 		<div id="container">
 			<div id="left" class="box">
+				<div id="key" class="smartField">
+					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter API key here."></textarea>
+				</div>
 				<div id="query" class="smartField">
-					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
+					<textarea class=""cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
 				</div>
 				<button type="button" id="query-butt" onclick="onQuery()">Submit</button>
 				<div id="search" class="smartField">
 					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter regex here."></textarea>
 				</div>
-				<div id="input" class="smartField">
-					<textarea cols="100" rows="10" tabindex="2" placeholder="Enter test data here."></textarea>
-				</div>
 				<div id="solution-container">
 					<div id="error-container"></div>
+					<label for="solution-names" id="solution-label">Select a solution:</label> 
+					<select name="solution-names" id="solution-dropdown" onchange="dropdownChange()"> 
+						<option value="solution-1">Solution 1</option> 
+						<option value="solution-2">Solution 2</option> 
+						<option value="solution-3">Solution 3</option> 
+						<option value="solution-4">Solution 4</option> 
+					</select>
+					<p id="solution-1" class="default solution">Solution 1</p>
+					<p id="solution-2" class="solution">Solution 2</p>
+					<p id="solution-3" class="solution">Solution 3</p>
+					<p id="solution-4" class="solution">Solution 4</p>
 				</div>
 			</div>
 			<div id="right" class="box">
-				<label for="test-names" id="test-label">Select a test:</label> 
-				<select name="test-names" id="test-names-1" onchange="dropdownChange()"> 
-					<option value="test-1">Test 1</option> 
-					<option value="test-2">Test 2</option> 
-					<option value="test-3">Test 3</option> 
-					<option value="test-4">Test 4</option> 
-				</select>
 				<div id="tests-container">
 					<div id="best"></div>
 					<div id="passed"></div>
@@ -178,7 +181,12 @@
   <script>
     const patternpal = new PatternPal();
 
-    // TODO: listen for API key changes and update patternpal
+	// Listen for API key changes and update patternpal
+	const api_key = document.getElementById('key').getElementsByTagName('textarea')[0];
+
+	api_key.addEventListener('input', function handleChange(event) {
+        patternpal.setApiKey(api_key.value);
+    });
 
     // TODO: testing only REMOVE BEFORE PUBLISHING
     // mock the solutions
@@ -295,7 +303,8 @@
       console.log("solutions", solutions);
 
 	  document.getElementById('solution-container').innerText = solutions
-    // set the value of search to the best solution
+	
+    // Set the value of search to the best solution
     document.getElementById('search').getElementsByTagName('textarea')[0].value = best_solution;
     }
 
@@ -305,12 +314,12 @@
       const passed = patternpal.getTestsPassedByBestSolution();
       console.log("passed", passed);
       const failed = patternpal.getTestsFailedByBestSolution();
-	    console.log("failed", failed);
+	  console.log("failed", failed);
 
       // TODO: populate
-	  document.querySelector('.tests-container #best').innerText = best
-	  document.getElementById('.tests-container #passed').innerText = passed
-	  document.getElementById('.tests-container #failed').innerText = failed
+	  document.getElementById('best').textContent = best
+	  document.getElementById('passed').textContent = passed
+	  document.getElementById('failed').textContent = failed
 
     }
 	

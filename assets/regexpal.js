@@ -13,6 +13,7 @@
 var RegexPal = {
 	/* Store DOM node references for quick lookup */
 	fields: {
+		key: new SmartField("key"),
 		query: new SmartField("query"),
 		search: new SmartField("search"),
 		input:  new SmartField("input"),
@@ -45,7 +46,8 @@ extend(RegexPal, function () {
 			};
 
 			return function () {
-				var	query = String(f.query.textbox.value),
+				var	key = String(f.key.textbox.value),
+					query = String(f.query.textbox.value),
 					search = String(f.search.textbox.value),
 					input  = String(f.input.textbox.value);
 				
