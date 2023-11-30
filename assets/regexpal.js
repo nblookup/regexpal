@@ -13,6 +13,8 @@
 var RegexPal = {
 	/* Store DOM node references for quick lookup */
 	fields: {
+		key: new SmartField("key"),
+		query: new SmartField("query"),
 		search: new SmartField("search"),
 		input:  new SmartField("input"),
 		options: {
@@ -44,8 +46,12 @@ extend(RegexPal, function () {
 			};
 
 			return function () {
-				var	search = String(f.search.textbox.value),
+				var	key = String(f.key.textbox.value),
+					query = String(f.query.textbox.value),
+					search = String(f.search.textbox.value),
 					input  = String(f.input.textbox.value);
+				
+				// HANDLE QUERY HERE TO GENERATE TESTS
 
 				/* Abort if the user's regex contains an error (the test regex accounts for IE's changes to innerHTML).
 				The syntax highlighting catches a number of mistakes and cross-browser issues which might not cause the
@@ -688,6 +694,7 @@ These could be included, but Opera handles them incorrectly:
 	onresize = function (e) {
 		// Make the input field fill viewport height
 		f.input.field.style.height = Math.max((window.innerHeight || document.documentElement.clientHeight) - 210, 60) + "px";
+		f.query.setDimensions();
 		f.search.setDimensions();
 		f.input.setDimensions();
 	};
@@ -755,6 +762,7 @@ These could be included, but Opera handles them incorrectly:
 
 		onunload = function (e) {
 			// No need to purge the potentially numerous descendants of the background <pre> elements
+			f.query.clearBg();
 			f.search.clearBg();
 			f.input.clearBg();
 			// Remove event handlers to clear memory leaks

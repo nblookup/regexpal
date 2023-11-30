@@ -14,36 +14,26 @@
 	<title>Regex Tester &ndash; RegexPal</title>
 	<link href="./assets/regexpal.css" rel="stylesheet" type="text/css"/>
 </head>
+<script>
+	function dropdownChange() {
+	// Dropdown to show tests
+	const dd = document.getElementById('solution-dropdown');
+
+	dd.addEventListener('change', function handleChange(event) {
+		const solns = document.querySelectorAll(".solution");
+
+		solns.forEach((soln) => {
+			soln.style.display = 'none';
+		});
+
+		const selected = document.getElementById(event.target.value);
+		selected.style.display = 'block';
+	});
+}
+</script>
 <body>
 	<div id="header">
-		<img src="./assets/regexpal.gif" alt="RegexPal"/>
-		<h1><a href="./"><span class="t1">Regex</span><span class="t2">Pal</span>
-			<span id="version">0.1.4</span>
-			<span id="subtitle">&mdash; a JavaScript regular expression tester</span></a>
-		</h1>
-		<ul id="nav">
-			<li><a href="http://blog.stevenlevithan.com/archives/regexpal">Help</a></li>
-			<li><a href="./history/">Version History</a></li>
-			<li><a href="mailto:steves_list&#064;hotmail.com">Feedback</a></li>
-			<li><a href="http://blog.stevenlevithan.com">Blog</a></li>
-		</ul>
-	</div>
-
-	<div id="options">
-		<ul>
-			<li class="hidden"><input id="flagG" type="checkbox" checked="checked"/><label for="flagG">Global</label> <span class="flag">(g)</span></li>
-			<li><input id="flagI" type="checkbox"/><label for="flagI">Case insensitive</label> <span class="flag">(i)</span></li>
-			<li><input id="flagM" type="checkbox"/><label for="flagM">^$ match at line breaks</label> <span class="flag">(m)</span></li>
-			<li><input id="flagS" type="checkbox"/><label for="flagS">Dot matches all</label> <span class="flag">(s<span class="plain">; via <a href="http://stevenlevithan.com/regex/xregexp/">XRegExp</a></span>)</span></li>
-			<li class="optGroup" id="quickReferenceDropdown">Quick Reference</li>
-			<li class="optGroup" id="optionsDropdown">Options
-				<ul>
-					<li><input id="highlightSyntax" type="checkbox" checked="checked"/><label for="highlightSyntax">Highlight regex syntax</label></li>
-					<li><input id="highlightMatches" type="checkbox" checked="checked"/><label for="highlightMatches">Highlight matches</label></li>
-					<li><input id="invertMatches" type="checkbox"/><label for="invertMatches" title="Match any text not matched by the regex">Invert results</label></li>
-				</ul>
-			</li>
-		</ul>
+		<img src="./assets/patternpal.png" alt=PatternPal"/ class="logo">
 	</div>
 
 	<div id="quickReference" class="hidden">
@@ -142,25 +132,230 @@
 	</div>
 
 	<div id="body">
-		<div id="search" class="smartField">
-			<textarea cols="100" rows="3" tabindex="1">Enter regex here.</textarea>
-		</div>
-		<div id="input" class="smartField">
-			<textarea cols="100" rows="10" tabindex="2">Enter test data here.</textarea>
+		<div id="container">
+			<div id="left" class="box">
+				<div id="key" class="smartField">
+					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter API key here."></textarea>
+				</div>
+				<div id="query" class="smartField">
+					<textarea class=""cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
+				</div>
+				<button type="button" id="query-butt" onclick="onQuery()">Submit</button>
+				<div id="search" class="smartField">
+					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter regex here."></textarea>
+				</div>
+				<div id="solution-container">
+					<div id="error-container"></div>
+					<label for="solution-names" id="solution-label">Select a solution:</label> 
+					<select name="solution-names" id="solution-dropdown" onchange="dropdownChange()"> 
+						<option value="solution-1">Solution 1</option> 
+						<option value="solution-2">Solution 2</option> 
+						<option value="solution-3">Solution 3</option> 
+						<option value="solution-4">Solution 4</option> 
+					</select>
+					<p id="solution-1" class="default solution">Solution 1</p>
+					<p id="solution-2" class="solution">Solution 2</p>
+					<p id="solution-3" class="solution">Solution 3</p>
+					<p id="solution-4" class="solution">Solution 4</p>
+				</div>
+			</div>
+			<div id="right" class="box">
+				<div id="tests-container">
+					<div id="best"></div>
+					<div id="passed"></div>
+					<div id="failed"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<div id="footer" class="small">
-		<p><strong>Need more power?</strong> Get <a href="http://www.regexbuddy.com/cgi-bin/affref.pl?aff=SteveL">RegexBuddy</a> from <abbr title="Just Great Software">JGsoft</abbr>, a powerful regex tester &amp; builder that inspired many of this application's features.</p>
-		<p id="copyright">&copy; 2008 <a href="http://blog.stevenlevithan.com">Steven Levithan</a> &mdash; <a href="http://code.google.com/p/regexpal/">Google Code</a></p>
+		<p>Designed by Sean Yang and Binita Gupta, built on RegexPal</p>
+		<p id="copyright">&copy; 2023 <a href="https://github.com/binita-g/pattern-pal-4">Github</a>
 	</div>
 
-	<script src="./assets/build-0.1.4.js"></script>
-	<!-- Build file includes:
 	<script src="./assets/xregexp.js"></script>
 	<script src="./assets/helpers.js"></script>
 	<script src="./assets/regexpal.js"></script>
-	-->
+  <script src="./assets/patternpal.js"></script>
+  <script>
+    const patternpal = new PatternPal();
+
+	// Listen for API key changes and update patternpal
+	const api_key = document.getElementById('key').getElementsByTagName('textarea')[0];
+
+	api_key.addEventListener('input', function handleChange(event) {
+        patternpal.setApiKey(api_key.value);
+    });
+
+    // TODO: testing only REMOVE BEFORE PUBLISHING
+    // mock the solutions
+    patternpal.solutions = [
+      `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$`,
+      `^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$`,
+      `^(?:[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*)@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)+$`,
+      `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$`,
+      `^[\w\d._%+-]+@(?:[\w\d-]+\.)+\w{2,}$`,
+    ].map(regString => new RegExp(regString));
+
+    // mock the tests
+    patternpal.tests = [
+      (regex) => {
+      // Explanation: A valid email address must have a "@" symbol
+      return regex.test("test@example.com");
+      },
+      (regex) => {
+      // Explanation: A valid email address must have a "." symbol
+      return regex.test("john.doe123@gmail.com");
+      },
+      (regex) => {
+      // Explanation: A valid email address must end with a valid domain name
+      return regex.test("jane@company.co.uk");
+      },
+      (regex) => {
+      // Explanation: A valid email address must not have spaces
+      return regex.test("user123@example-domain.net");
+      },
+      (regex) => {
+      // Explanation: A valid email address must not have spaces
+      return !regex.test("first. last@subdomain. example.com");
+      },
+      (regex) => {
+      // Explanation: An empty string is not a valid email address
+      return !regex.test("");
+      },
+      (regex) => {
+      // Explanation: An email address must contain the "a" symbol
+      return !regex.test("test.example.com");
+      },
+      (regex) => {
+      // Explanation: The domain part of an email address must be a valid domain name
+      return !regex.test("test@example.123");
+      },
+      (regex) => {
+      // Explanation: An email address should have exactly one "@" symbol
+      return !regex.test ("test@example@example.com");
+      },
+      (regex) => {
+      // Explanation: The local part of an email address should not contain special characters like "$"
+      return !regex.test ("te$st@example.com");
+      },
+    ];
+
+    patternpal.getTestsPassedByBestSolution = () => {
+      return [
+        patternpal.tests[3].toString(),
+        patternpal.tests[4].toString(),
+        patternpal.tests[5].toString(),
+        patternpal.tests[6].toString(),
+        patternpal.tests[7].toString(),
+        patternpal.tests[8].toString(),
+        patternpal.tests[9].toString(),
+      ]
+    };
+
+    patternpal.getTestsFailedByBestSolution = () => {
+      return [
+        patternpal.tests[0].toString(),
+        patternpal.tests[1].toString(),
+        patternpal.tests[2].toString(),
+      ]
+    };
+
+    patternpal.best_solution = 0;
+
+    patternpal.best_tests = [0, 2];
+
+    patternpal.query =
+      async () => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, 1000);
+        });
+      };
+
+    // TODO: ^^^^
+
+    function showError(err) {
+      document.getElementById('error-container').innerText = err;
+    }
+
+    function removeError() {
+      document.getElementById('error-container').innerText = '';
+    }
+	
+    const query = document.getElementById('query').getElementsByTagName('textarea')[0];
+
+    // Watch for changes in the input field and update the prompt
+    function watchInput() {
+      query.addEventListener('input', function handleChange(event) {
+        patternpal.setPrompt(query.value);
+      });
+    }
+    watchInput();
+
+	function populateSolutions() {
+      const solutions = patternpal.getAllSolutions();
+      console.log(solutions);
+      const best_solution = patternpal.getBestSolution();
+
+      console.log("solutions", solutions);
+
+	  document.getElementById('solution-container').innerText = solutions
+	
+    // Set the value of search to the best solution
+    document.getElementById('search').getElementsByTagName('textarea')[0].value = best_solution;
+    }
+
+    function populateTests() {
+      const best = patternpal.getBestTests();
+      console.log("best", best);
+      const passed = patternpal.getTestsPassedByBestSolution();
+      console.log("passed", passed);
+      const failed = patternpal.getTestsFailedByBestSolution();
+	  console.log("failed", failed);
+
+      // TODO: populate
+	  document.getElementById('best').textContent = best
+	  document.getElementById('passed').textContent = passed
+	  document.getElementById('failed').textContent = failed
+
+    }
+	
+    // On query, use PatternPal to query for solutions and tests
+    function onQuery() {
+      // TODO: set the button to loading
+      // make sure that the query is not empty
+      if (!query.value) {
+        // TODO: Show error
+        console.log('query is empty');
+        return;
+      }
+      patternpal.query()
+        .then(() => {
+          // Remove existing error message
+          removeError();
+          // Populate solution and tests into UI
+          populateSolutions();
+          populateTests();
+        })
+        .catch((err) => {
+          showError(err);
+        })
+        .finally(() => {
+          // TODO: set the button to not loading
+        });
+    }
+
+    function showError(err) {
+      
+    }
+  </script>
+
+  <!-- TODO: TEST!! REMOVE BEFORE PUBLISHING -->
+  <!-- <script src="./assets/patternpal-local-test.js"></script> -->
+  <!-- <script src="./assets/patternpal-online-test.js"></script> -->
 
 	<!-- Stats by Mint <haveamint.com> -->
 	<script src="/mint/?js"></script>
