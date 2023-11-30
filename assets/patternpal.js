@@ -34,10 +34,6 @@ class PatternPal {
   // String[] tests.
   tests;
 
-  constructor(api_key) {
-    this.api_key = api_key;
-  }
-
   /**
    * Private methods
    */
@@ -235,6 +231,14 @@ class PatternPal {
   /**
    * Public API
    */
+
+  setApiKey(api_key) {
+    this.api_key = api_key;
+  }
+
+  getApiKey() {
+    return this.api_key;
+  }
 
   setPrompt(prompt) {
     this.prompt = prompt;

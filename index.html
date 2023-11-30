@@ -138,12 +138,16 @@
 				<div id="query" class="smartField">
 					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter query here."></textarea>
 				</div>
+				<button type="button" id="query-butt" onclick="onQuery()">Submit</button>
 				<div id="search" class="smartField">
 					<textarea cols="100" rows="3" tabindex="1" placeholder="Enter regex here."></textarea>
 				</div>
 				<div id="input" class="smartField">
 					<textarea cols="100" rows="10" tabindex="2" placeholder="Enter test data here."></textarea>
 				</div>
+				<div id="solution-container">
+					<div id="error-container"></div>
+				<div>
 			</div>
 			<div id="right" class="box">
 				<label for="test-names" id="test-label">Select a test:</label> 
@@ -153,10 +157,11 @@
 					<option value="test-3">Test 3</option> 
 					<option value="test-4">Test 4</option> 
 				</select>
-				<p id="test-1" class="default test">Test 1</p>
-				<p id="test-2" class="test">Test 2</p>
-				<p id="test-3" class="test">Test 3</p>
-				<p id="test-4" class="test">Test 4</p>
+				<div id="tests-container">
+					<div id="best"></div>
+					<div id="passed"></div>
+					<div id="failed"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -170,6 +175,174 @@
 	<script src="./assets/helpers.js"></script>
 	<script src="./assets/regexpal.js"></script>
   <script src="./assets/patternpal.js"></script>
+  <script>
+    const patternpal = new PatternPal();
+
+    // TODO: listen for API key changes and update patternpal
+
+    // TODO: testing only REMOVE BEFORE PUBLISHING
+    // mock the solutions
+    patternpal.solutions = [
+      `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$`,
+      `^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$`,
+      `^(?:[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*)@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)+$`,
+      `^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,}$`,
+      `^[\w\d._%+-]+@(?:[\w\d-]+\.)+\w{2,}$`,
+    ].map(regString => new RegExp(regString));
+
+    // mock the tests
+    patternpal.tests = [
+      (regex) => {
+      // Explanation: A valid email address must have a "@" symbol
+      return regex.test("test@example.com");
+      },
+      (regex) => {
+      // Explanation: A valid email address must have a "." symbol
+      return regex.test("john.doe123@gmail.com");
+      },
+      (regex) => {
+      // Explanation: A valid email address must end with a valid domain name
+      return regex.test("jane@company.co.uk");
+      },
+      (regex) => {
+      // Explanation: A valid email address must not have spaces
+      return regex.test("user123@example-domain.net");
+      },
+      (regex) => {
+      // Explanation: A valid email address must not have spaces
+      return !regex.test("first. last@subdomain. example.com");
+      },
+      (regex) => {
+      // Explanation: An empty string is not a valid email address
+      return !regex.test("");
+      },
+      (regex) => {
+      // Explanation: An email address must contain the "a" symbol
+      return !regex.test("test.example.com");
+      },
+      (regex) => {
+      // Explanation: The domain part of an email address must be a valid domain name
+      return !regex.test("test@example.123");
+      },
+      (regex) => {
+      // Explanation: An email address should have exactly one "@" symbol
+      return !regex.test ("test@example@example.com");
+      },
+      (regex) => {
+      // Explanation: The local part of an email address should not contain special characters like "$"
+      return !regex.test ("te$st@example.com");
+      },
+    ];
+
+    patternpal.getTestsPassedByBestSolution = () => {
+      return [
+        patternpal.tests[3].toString(),
+        patternpal.tests[4].toString(),
+        patternpal.tests[5].toString(),
+        patternpal.tests[6].toString(),
+        patternpal.tests[7].toString(),
+        patternpal.tests[8].toString(),
+        patternpal.tests[9].toString(),
+      ]
+    };
+
+    patternpal.getTestsFailedByBestSolution = () => {
+      return [
+        patternpal.tests[0].toString(),
+        patternpal.tests[1].toString(),
+        patternpal.tests[2].toString(),
+      ]
+    };
+
+    patternpal.best_solution = 0;
+
+    patternpal.best_tests = [0, 2];
+
+    patternpal.query =
+      async () => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve();
+          }, 1000);
+        });
+      };
+
+    // TODO: ^^^^
+
+    function showError(err) {
+      document.getElementById('error-container').innerText = err;
+    }
+
+    function removeError() {
+      document.getElementById('error-container').innerText = '';
+    }
+	
+    const query = document.getElementById('query').getElementsByTagName('textarea')[0];
+
+    // Watch for changes in the input field and update the prompt
+    function watchInput() {
+      query.addEventListener('input', function handleChange(event) {
+        patternpal.setPrompt(query.value);
+      });
+    }
+    watchInput();
+
+	function populateSolutions() {
+      const solutions = patternpal.getAllSolutions();
+      console.log(solutions);
+      const best_solution = patternpal.getBestSolution();
+
+      console.log("solutions", solutions);
+
+	  document.getElementById('solution-container').innerText = solutions
+    // set the value of search to the best solution
+    document.getElementById('search').getElementsByTagName('textarea')[0].value = best_solution;
+    }
+
+    function populateTests() {
+      const best = patternpal.getBestTests();
+      console.log("best", best);
+      const passed = patternpal.getTestsPassedByBestSolution();
+      console.log("passed", passed);
+      const failed = patternpal.getTestsFailedByBestSolution();
+	    console.log("failed", failed);
+
+      // TODO: populate
+	  document.querySelector('.tests-container #best').innerText = best
+	  document.getElementById('.tests-container #passed').innerText = passed
+	  document.getElementById('.tests-container #failed').innerText = failed
+
+    }
+	
+    // On query, use PatternPal to query for solutions and tests
+    function onQuery() {
+      // TODO: set the button to loading
+      // make sure that the query is not empty
+      if (!query.value) {
+        // TODO: Show error
+        console.log('query is empty');
+        return;
+      }
+      patternpal.query()
+        .then(() => {
+          // Remove existing error message
+          removeError();
+          // Populate solution and tests into UI
+          populateSolutions();
+          populateTests();
+        })
+        .catch((err) => {
+          showError(err);
+        })
+        .finally(() => {
+          // TODO: set the button to not loading
+        });
+    }
+
+    function showError(err) {
+      
+    }
+  </script>
 
   <!-- TODO: TEST!! REMOVE BEFORE PUBLISHING -->
   <!-- <script src="./assets/patternpal-local-test.js"></script> -->
