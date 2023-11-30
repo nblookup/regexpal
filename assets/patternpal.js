@@ -46,7 +46,7 @@ class PatternPal {
       'Authorization': `Bearer ${t.api_key}`
     };
     const data = {
-      "model": "gpt-3.5-turbo",
+      "model": "gpt-3.5-turbo-1106",
       "messages": [
         {
           "role": "system",
@@ -109,6 +109,10 @@ class PatternPal {
   
   // Parses the response from the LLM into an array of tests.
   parseTestsResponse(stringResponse) {
+    // Start parsing at the "return"
+    stringResponse = stringResponse.substring(stringResponse.indexOf("return"));
+    // Remove ```
+    stringResponse = stringResponse.replace(/```/g, '');
     try {
       const f = new Function(stringResponse);
       return f();
@@ -124,7 +128,7 @@ class PatternPal {
 
   // System message for generating `n` tests. Polarity is a boolean. Either positive tests ("things that should match") or negative tests ("things that should not match").
   getTestSystemMessage(n, polarity) {
-    return `Generate ${n} ${polarity ? "positive" : "negative"} tests. Each test is written as vanilla javascript anonymous functions of the type: “"(regex: string) => boolean”. Format your output exactly like so:
+    return `Generate ${n} ${polarity} tests in a JSON list. Each test is an anonymous function in vanilla javascript of the type (regex: string) => boolean. Tests should return true if the regex passes the test. Put a comment within each function describing the test. Format your output exactly like so:
     \`\`\`
     return [
       (regex) => {
