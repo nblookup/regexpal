@@ -157,6 +157,7 @@
 					<p id="solution-2" class="solution">Solution 2</p>
 					<p id="solution-3" class="solution">Solution 3</p>
 					<p id="solution-4" class="solution">Solution 4</p>
+					<div id="solutions"></div>
 				</div>
 			</div>
 			<div id="right" class="box">
@@ -302,7 +303,7 @@
 
       console.log("solutions", solutions);
 
-	  document.getElementById('solution-container').innerText = solutions
+	  document.getElementById('solutions').innerText = solutions
 	
     // Set the value of search to the best solution
     document.getElementById('search').getElementsByTagName('textarea')[0].value = best_solution;
